@@ -1,9 +1,9 @@
 import pg from 'pg';
 const client = new pg.Client({
-    host: 'localhost',
+    host: process.env.DB,
     port: 5432,
     user: 'postgres',
-    password: 'lbr',
+    password: process.env.PASSWORD,
     database: 'postgres'
 });
 export const downloading = new Map();
