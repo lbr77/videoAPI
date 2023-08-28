@@ -13,7 +13,7 @@ const limiter = new Bottleneck({
     minTime: 1,
 })
 const router = Router();
-const apiKey = "fa83dc8b69fa8e021e8717e25150462e";
+const apiKey = process.env.IMDB_KEY;
 const matcher1 = /\[(.*)\] (.*) - (.*) \[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\].(.*)/;
 const matcher2 = /\[(.*)\] (.*) - (.*) \[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\].(.*)/;
 const title_matcher = /(.*)(第.*季|Season \d+)/
@@ -97,9 +97,9 @@ router.post("/data/:year/:month",async(req,res)=>{ // monthparams like : yyyy-m
                 }
                 // console.log(name,episode,dpi,sublang);
                 await db.query(`
-                INSERT into vlists (name,episode,dpi,sublang,videoinfo) VALUES (\$1 , \$2 ,\$3, \$4 ,\$5)
+                INSERT into vlists (name,episode,dpi,sublang,videoinfo,time) VALUES (\$1 , \$2 ,\$3, \$4 ,\$5, \$6)
                 ON CONFLICT (videoinfo) DO NOTHING`,
-                [name,episode,dpi,sublang,`${BASE_URL}${year}-${month}/${e.name}`])
+                [name,episode,dpi,sublang,`${BASE_URL}${year}-${month}/${e.name}`,new Date(e.modifiedTime).getTime() ])
             });
             res.json({"status": "ok"});
         }).catch(err=>{

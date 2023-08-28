@@ -24,7 +24,8 @@ app.listen(port,async()=>{
             dpi text,
             sublang text,
             videoinfo text unique,
-            picture text
+            picture text,
+            time number
         )`).then(()=>{
             logger.info("Created");
         })

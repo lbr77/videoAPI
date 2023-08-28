@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/",async (req,res)=>{
     await db.query(`
-    SELECT distinct name,picture from vlists`)
+    SELECT distinct name,picture from vlists order by time`)
     .then(qRes=>qRes.rows)
     .then(data=>{
         for(let d of data){
