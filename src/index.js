@@ -5,6 +5,7 @@ import log4js from  "log4js";
 import update from "./router/update.js";
 import search from "./router/search.js";
 import db from "./utils/db.js"
+import config from "./config.js";
 const app = express();
 app.use(cors());
 app.use(log4js.connectLogger(logger));
@@ -12,7 +13,7 @@ app.use(log4js.connectLogger(logger));
 app.use("/search",search)
 app.use("/update",update);
 
-const port = process.env.PORT || 2999;
+const port = config.PORT || 2999;
 app.listen(port,async()=>{
     await db.connect().then(async() => {
         logger.info("Connected to PostgreSQL.");

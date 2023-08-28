@@ -7,8 +7,11 @@ const router = Router();
 
 router.get("/",async (req,res)=>{
     await db.query(`
-    SELECT DISTINCT ON (name) name, picture, time from vlists ORDER BY name, picture, time desc; `)
-    .then(qRes=>qRes.rows)
+    SELECT name,picture FROM  (SELECT DISTINCT ON (name) name, picture, time from vlists ) as sub ORDER BY time desc`)
+    .then(qRes=>{
+        const q = qRes.rows.sort((a,b)=>{parseInt(a.time) > parseInt(b.time)});
+        return q
+    })
     .then(data=>{
         for(let d of data){
             if(d.picture==null){
@@ -30,7 +33,7 @@ router.get("/:query",async(req,res)=>{
     }
     const query = req.params.query;
     await db.query(
-        `SELECT distinct name,picture from vlists where name ilike \$1`,
+        `SELECT name,picture FROM  (SELECT DISTINCT ON (name) name, picture, time from vlists where name ilike \$1) as sub ORDER BY time desc`,
         [`%${query}%`]
     )
     .then(qRes=>qRes.rows)
@@ -38,7 +41,7 @@ router.get("/:query",async(req,res)=>{
         let ret = [];
         for(let d of data){
             let res = await qMaMi(d.name);
-            console.log(Object.assign({},res,d));
+            // console.log(Object.assign({},res,d));
             ret.push(Object.assign({},res,d));
         }
         res.send(ret);

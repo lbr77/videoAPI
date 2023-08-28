@@ -5,6 +5,8 @@ import axios from 'axios';
 import db from '../utils/db.js';
 import logger from '../utils/logger.js';
 import Bottleneck from 'bottleneck';
+import config from "../config.js";
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -13,7 +15,7 @@ const limiter = new Bottleneck({
     minTime: 1,
 })
 const router = Router();
-const apiKey = process.env.IMDB_KEY;
+const apiKey = config.IMDB_KEY;
 const matcher1 = /\[(.*)\] (.*) - (.*) \[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\].(.*)/;
 const matcher2 = /\[(.*)\] (.*) - (.*) \[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\].(.*)/;
 const title_matcher = /(.*)(第.*季|Season \d+)/

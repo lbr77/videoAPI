@@ -1,9 +1,11 @@
 import pg from 'pg';
+import config from "../config.js";
+
 const client = new pg.Client({
-    host: process.env.DB,
+    host: config.DB,
     port: 5432,
     user: 'postgres',
-    password: process.env.PASSWORD,
+    password: config.PASSWORD,
     database: 'postgres'
 });
 export const downloading = new Map();
