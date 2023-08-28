@@ -7,8 +7,8 @@ const router = Router();
 
 router.get("/",async (req,res)=>{
     await db.query(`
-    SELECT distinct name,picture from vlists order by time`)
-    .then(qRes=>qRes.rows)
+    SELECT distinct name,picture,time from vlists `)
+    .then(qRes=>qRes.rows.sort().reverse())
     .then(data=>{
         for(let d of data){
             if(d.picture==null){
